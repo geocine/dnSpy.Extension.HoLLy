@@ -13,7 +13,9 @@
     </ItemGroup>
     
     <ItemGroup>
+        <ProjectReference Include="..\Echo\src\Core\Echo\Echo.csproj" />
         <ProjectReference Include="..\Echo\src\Core\Echo.ControlFlow\Echo.ControlFlow.csproj" />
+        <ProjectReference Include="..\Echo\src\Core\Echo.DataFlow\Echo.DataFlow.csproj" />
     </ItemGroup>
 
     <ItemGroup>

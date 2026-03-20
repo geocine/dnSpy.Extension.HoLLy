@@ -4,7 +4,6 @@ using dnlib.DotNet;
 using dnSpy.Contracts.Decompiler;
 using Echo.ControlFlow;
 using Echo.ControlFlow.Construction;
-using Echo.ControlFlow.Construction.Static;
 using Echo.Platforms.Iced;
 using Iced.Intel;
 

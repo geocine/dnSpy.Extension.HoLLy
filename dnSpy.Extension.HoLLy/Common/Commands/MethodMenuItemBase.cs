@@ -40,6 +40,9 @@ namespace HoLLy.dnSpyExtension.Common.Commands
             if (IsTreeView(context))
             {
                 var selectedNodes = context.Find<TreeNodeData[]>();
+                if (selectedNodes is null)
+                    return null;
+
                 if (selectedNodes.Length != 1)
                     return null;
 

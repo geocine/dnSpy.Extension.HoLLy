@@ -16,6 +16,9 @@ namespace HoLLy.dnSpyExtension.Common.Commands
                 return null;
 
             var selectedNodes = context.Find<TreeNodeData[]>();
+            if (selectedNodes is null)
+                return null;
+
             if (selectedNodes.Length != 1)
                 return null;
 

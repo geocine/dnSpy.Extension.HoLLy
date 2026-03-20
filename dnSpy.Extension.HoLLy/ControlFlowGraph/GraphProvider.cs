@@ -8,7 +8,7 @@ using dnSpy.Contracts.Settings.Fonts;
 using dnSpy.Contracts.Themes;
 using Echo.ControlFlow;
 using Echo.ControlFlow.Blocks;
-using Echo.Core.Graphing;
+using Echo.Graphing;
 using Echo.Platforms.Dnlib;
 using HoLLy.dnSpyExtension.NativeDisassembler;
 using Microsoft.Msagl.Core.Layout;
@@ -67,6 +67,7 @@ namespace HoLLy.dnSpyExtension.ControlFlowGraph
         }
 
         private class ControlFlowGraphProvider<TInstruction> : GraphProvider
+            where TInstruction : notnull
         {
             private readonly ControlFlowGraph<TInstruction> graph;
 
@@ -118,7 +119,7 @@ namespace HoLLy.dnSpyExtension.ControlFlowGraph
                             FontName = font.FontFamily.ToString(),
                             FontSize = font.FontSize,
                         },
-                        UserData = node.Id,
+                        UserData = node.Offset,
                     };
                     newGraph.AddNode(newNode);
                 }
@@ -151,7 +152,7 @@ namespace HoLLy.dnSpyExtension.ControlFlowGraph
                 {
                     case BasicBlock<Instruction> cilBlock:
                     {
-                        sb.AppendLine($"IL_{cilBlock.Header.Offset:X8}:\n");
+                        sb.AppendLine($"IL_{cilBlock.Offset:X8}:\n");
 
                         foreach (var cilInstruction in cilBlock.Instructions)
                         {
