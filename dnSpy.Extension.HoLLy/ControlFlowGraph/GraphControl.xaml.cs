@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using System.Windows.Shapes;
 using dnSpy.Contracts.Settings.Fonts;
 using dnSpy.Contracts.Themes;
@@ -13,6 +14,9 @@ namespace HoLLy.dnSpyExtension.ControlFlowGraph
 {
     public partial class GraphControl : UserControl
     {
+        private readonly GraphViewer viewer;
+        private bool initialViewApplied;
+
         public GraphControl(GraphProvider echoGraph, ITheme theme, FontSettings font)
         {
             InitializeComponent();
@@ -22,11 +26,41 @@ namespace HoLLy.dnSpyExtension.ControlFlowGraph
             Panel.VerticalAlignment = VerticalAlignment.Stretch;
             Panel.ClipToBounds = true;
 
-            var viewer = new GraphViewer();
+            viewer = new GraphViewer();
             viewer.BindToPanel(Panel);
             viewer.Graph = echoGraph.ToMicrosoftGraph(theme, font);
             SetTooltips(viewer);
-            viewer.NodeToCenterWithScale(viewer.Graph.Nodes.OrderBy(n => n.UserData is long u ? u : long.MaxValue).First(), 1);
+
+            Loaded += GraphControl_Loaded;
+            SizeChanged += GraphControl_SizeChanged;
+        }
+
+        private void GraphControl_Loaded(object sender, RoutedEventArgs e) => ApplyInitialView();
+
+        private void GraphControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (!initialViewApplied && e.NewSize.Width > 0 && e.NewSize.Height > 0)
+                ApplyInitialView();
+        }
+
+        private void ApplyInitialView()
+        {
+            if (initialViewApplied || viewer.Graph is null)
+                return;
+
+            var firstNode = viewer.Graph.Nodes.OrderBy(n => n.UserData is long u ? u : long.MaxValue).FirstOrDefault();
+            if (firstNode is null)
+                return;
+
+            // Wait until layout is complete so the viewport size is valid before centering.
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                if (initialViewApplied)
+                    return;
+
+                viewer.NodeToCenterWithScale(firstNode, 1);
+                initialViewApplied = true;
+            }));
         }
 
         private static void SetTooltips(GraphViewer viewer)
