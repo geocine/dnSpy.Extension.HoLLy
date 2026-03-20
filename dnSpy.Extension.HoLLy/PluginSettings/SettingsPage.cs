@@ -28,7 +28,7 @@ namespace HoLLy.dnSpyExtension.PluginSettings
 
         public override Guid Guid => Constants.SettingsPageGuid;
         public override double Order => AppSettingsConstants.ORDER_BOOKMARKS + 10000;
-        public override string Title => "dnSpy.Extension.HoLLy";
+        public override string Title => "SourceMap";
         public override object UIObject => uiObject ??= new SettingsControl { DataContext = newSettings };
 
         public SettingsPage(Settings settings)
