@@ -31,7 +31,11 @@ namespace HoLLy.dnSpyExtension.SourceMap.Commands
             if (textReference?.Reference is not IMemberDef m)
                 return;
 
-            string? newName = MsgBox.Instance.Ask<string>(string.Empty, title: $"New name for {SourceMapUtils.GetDefToMap(m)}");
+            var mappedMember = SourceMapUtils.GetDefToMap(m);
+            string? newName = MsgBox.Instance.Ask<string>(
+                "Name:",
+                defaultText: sourceMapStorage.GetName(mappedMember) ?? mappedMember.Name,
+                title: $"New name for {mappedMember}");
 
             if (string.IsNullOrEmpty(newName))
                 return;
