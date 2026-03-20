@@ -19,36 +19,70 @@ I have developed some other extensions which are linked here for convenience:
 - [dnSpy.Extension.ThemeHotReload](https://github.com/HoLLy-HaCKeR/dnSpy.Extension.ThemeHotReload/tree/master)
 
 ### Installation
-Download the [latest release](https://github.com/holly-hacker/dnspy.extension.holly/releases/latest) for your dnSpyEx version (`net48` or `net6.0-windows`) and extract it to the `bin/Extensions/dnSpy.Extensions.HoLLy` directory. You may need to create this folder.
+Download the [latest release](https://github.com/holly-hacker/dnspy.extension.holly/releases/latest) for your dnSpyEx version (`net48` or `net10.0-windows`) and extract it to the `bin/Extensions/dnSpy.Extension.HoLLy` directory. You may need to create this folder.
 
-Make sure that you copied all the dependency DLLs too. Your directory structure will look something like this:
+If you build the extension yourself, use one of these output folders:
+
+- `dnSpy.Extension.HoLLy/bin/Release/net48`
+- `dnSpy.Extension.HoLLy/bin/Release/net10.0-windows`
+
+Copy the full contents of the matching folder into `bin/Extensions/dnSpy.Extension.HoLLy/`. Do not copy only `dnSpy.Extension.HoLLy.x.dll`; the dependency DLLs are required too.
+
+Your directory structure will look something like this:
+
 ```
 dnSpy-net-win64/
-├─ dnSpy.exe
-├─ dnSpy.Console.exe
-└─ bin/
-  ├─ Extensions/
-  │ └─ dnSpy.Extension.HoLLy/
-  │   ├─ AutomaticGraphLayout.dll
-  │   ├─ dnSpy.Extension.HoLLy.x.dll
-  │   ├─ Echo.Core.dll
-  │   └─ ...
-  ├─ LicenseInfo/
-  ├─ FileLists/
-  ├─ Themes/
-  ├─ dnSpy.Analyzer.x.dll
-  ├─ dnSpy.Contracts.Debugger.dll
-  └─ ...
+|- dnSpy.exe
+|- dnSpy.Console.exe
+`- bin/
+   |- Extensions/
+   |  `- dnSpy.Extension.HoLLy/
+   |     |- AutomaticGraphLayout.dll
+   |     |- dnSpy.Extension.HoLLy.x.dll
+   |     |- dnSpy.Extension.HoLLy.EchoPlatforms.dll
+   |     |- Echo.dll
+   |     |- Echo.ControlFlow.dll
+   |     |- Echo.DataFlow.dll
+   |     `- ...
+   |- LicenseInfo/
+   |- FileLists/
+   |- Themes/
+   |- dnSpy.Analyzer.x.dll
+   |- dnSpy.Contracts.Debugger.dll
+   `- ...
 ```
 
 Also make sure that you are using the correct version of dnSpy that matches the plugin! This should be mentioned in the [release notes](https://github.com/holly-hacker/dnspy.extension.holly/releases/latest) or the [changelog](https://github.com/HoLLy-HaCKeR/dnSpy.Extension.HoLLy/blob/master/CHANGELOG.md).
 The plugin **will not work** with certain mismatched versions due to strong-name signing of some dependencies.
 
+### Usage
+- **SourceMap decompiler**: select a decompiler variant ending in `(w/ SourceMap)` from the decompiler dropdown in the menu bar.
+- **Rename displayed symbols**: while using a SourceMap decompiler, right-click a type, method, property or field and choose `Change displayed name`.
+- **SourceMap menu**: use the top-level `SourceMap` menu for `Save SourceMap`, `Load SourceMap`, `Open SourceMap Cache Folder`, and `Open settings...`.
+- **Create control flow graphs**: right-click a method and choose `Create CFG`.
+- **Disassemble native methods**: right-click a native method and choose `Disassemble`.
+- **Disassemble a native entrypoint**: right-click an assembly node and choose `Disassemble Entrypoint`.
+- **Inject a managed DLL**: start debugging, then open the `Debug` menu and choose `Inject .NET DLL`.
+
+For DLL injection, the target assembly must contain a method with signature:
+
+```csharp
+static int Method(string argument)
+```
+
 ### Developing
-To test the extension, you can launch dnSpy with the `--extension-directory {directory}` argument, where `{directory}` is the build directory (ie. `.../bin/Debug/netcoreapp3.1`).
+To test the extension without copying files into the dnSpy installation, launch dnSpy with the `--extension-directory {directory}` argument, where `{directory}` is the build directory.
+
+Examples:
+
+```powershell
+dnSpy.exe --extension-directory "D:\path\to\dnSpy.Extension.HoLLy\dnSpy.Extension.HoLLy\bin\Debug\net10.0-windows"
+dnSpy.exe --extension-directory "D:\path\to\dnSpy.Extension.HoLLy\dnSpy.Extension.HoLLy\bin\Debug\net48"
+```
+
 JetBrains Rider supports launch profiles, allowing you to specify dnSpy as the executable to start. This means you can launch and debug the extension from within the IDE.
 
-Due to how the .NET Framework does assembly resolving, this method may only work on .NET Core.
+When using `--extension-directory`, prefer the modern .NET dnSpy build. .NET Framework assembly resolving can be more fragile when loading extensions from an external directory.
 
 ### License
 Due to dnSpy being licensed under the GPLv3 license, this plugin is too.
