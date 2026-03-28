@@ -38,7 +38,7 @@ namespace HoLLy.dnSpyExtension.SourceMap.Commands
                 if (string.IsNullOrEmpty(newParameterName))
                     return;
 
-                sourceMapStorage.SetParameterName(method, sequence, newParameterName);
+                sourceMapStorage.SetParameterName(method, sequence, newParameterName!);
 
                 var parameterDocument = documentTabService?.DocumentTreeView.FindNode(method.Module)?.Document;
                 if (parameterDocument is not null)
