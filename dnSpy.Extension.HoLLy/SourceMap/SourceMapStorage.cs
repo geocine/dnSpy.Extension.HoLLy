@@ -78,11 +78,41 @@ namespace HoLLy.dnSpyExtension.SourceMap
 
             var asm = member.Module.Assembly;
 
-            if (!loadedMaps.ContainsKey(asm) || loadedMaps[asm] == null)
-                loadedMaps[asm] = new Dictionary<(MapType, string), string>();
-
-            var map = loadedMaps[asm]!;
+            var map = GetOrCreateMap(asm);
             var key = (GetMapType(member), member.FullName);
+            map[key] = name;
+
+            SaveTo(asm, GetCacheLocation(asm));
+        }
+
+        public string? GetParameterName(MethodDef method, int sequence)
+        {
+            if (method is null)
+                throw new ArgumentNullException(nameof(method));
+            if (sequence <= 0)
+                throw new ArgumentOutOfRangeException(nameof(sequence), "sequence must be a positive metadata parameter sequence.");
+
+            var asm = method.Module.Assembly;
+            var map = TryGetMap(asm);
+            if (map is null)
+                return null;
+
+            var key = (MapType.ParameterDef, GetParameterKey(method, sequence));
+            return map.TryGetValue(key, out var mappedName) ? mappedName : null;
+        }
+
+        public void SetParameterName(MethodDef method, int sequence, string name)
+        {
+            if (method is null)
+                throw new ArgumentNullException(nameof(method));
+            if (sequence <= 0)
+                throw new ArgumentOutOfRangeException(nameof(sequence), "sequence must be a positive metadata parameter sequence.");
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("name cannot be empty.", nameof(name));
+
+            var asm = method.Module.Assembly;
+            var map = GetOrCreateMap(asm);
+            var key = (MapType.ParameterDef, GetParameterKey(method, sequence));
             map[key] = name;
 
             SaveTo(asm, GetCacheLocation(asm));
@@ -184,6 +214,28 @@ namespace HoLLy.dnSpyExtension.SourceMap
             loadedMaps[assembly] = dic;
         }
 
+        private Dictionary<(MapType, string), string>? TryGetMap(IAssembly asm)
+        {
+            if (loadedMaps.ContainsKey(asm) && loadedMaps[asm] == null)
+                return null;
+
+            if (!loadedMaps.ContainsKey(asm) && !TryLoadFromCache(asm))
+                return null;
+
+            return loadedMaps[asm];
+        }
+
+        private Dictionary<(MapType, string), string> GetOrCreateMap(IAssembly asm)
+        {
+            if (!loadedMaps.ContainsKey(asm))
+                _ = TryLoadFromCache(asm);
+
+            if (!loadedMaps.ContainsKey(asm) || loadedMaps[asm] == null)
+                loadedMaps[asm] = new Dictionary<(MapType, string), string>();
+
+            return loadedMaps[asm]!;
+        }
+
         private string GetCacheLocation(IAssembly asm)
         {
             string directory = CacheFolder;
@@ -203,6 +255,9 @@ namespace HoLLy.dnSpyExtension.SourceMap
                 _ => MapType.Other,
             };
 
+        private static string GetParameterKey(MethodDef method, int sequence) =>
+            $"{method.FullName}::param[{sequence}]";
+
         private enum MapType
         {
             Other,
@@ -210,6 +265,7 @@ namespace HoLLy.dnSpyExtension.SourceMap
             TypeDef,
             FieldDef,
             PropertyDef,
+            ParameterDef,
         }
     }
 }

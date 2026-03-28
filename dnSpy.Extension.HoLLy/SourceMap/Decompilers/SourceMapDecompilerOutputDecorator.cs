@@ -23,9 +23,25 @@ namespace HoLLy.dnSpyExtension.SourceMap.Decompilers
             switch (reference) {
                 case IMemberDef memberDef when text != "this" && text != "new":
                     return sourceMap.GetName(memberDef) ?? text;
+                case ISourceVariable sourceVariable when sourceVariable.IsParameter && !sourceVariable.IsDecompilerGenerated:
+                    return ModifyParameter(text, sourceVariable.Variable as Parameter);
+                case Parameter parameter:
+                    return ModifyParameter(text, parameter);
                 default:
                     return text;
             }
+        }
+
+        private string ModifyParameter(string text, Parameter? parameter)
+        {
+            if (parameter?.ParamDef is not ParamDef parameterDef || parameterDef.Sequence <= 0 || text == "this")
+                return text;
+
+            var method = parameterDef.DeclaringMethod ?? parameter.Method;
+            if (method is null)
+                return text;
+
+            return sourceMap.GetParameterName(method, parameterDef.Sequence) ?? text;
         }
 
         #region default implementation
