@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <DnSpyRoot Condition="'$(DnSpyRoot)' == ''">..\dnSpy</DnSpyRoot>
+  </PropertyGroup>
+
+  <Import Project="$(DnSpyRoot)\DnSpyCommon.props" />
+
+  <PropertyGroup>
+    <TargetFrameworks>net48;net10.0-windows</TargetFrameworks>
+    <AssemblyName>dnSpy.Extension.HoLLy.Contracts</AssemblyName>
+    <RootNamespace>HoLLy.dnSpyExtension.Contracts</RootNamespace>
+    <LangVersion>9</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dnlib" Version="$(DnlibVersion)" />
+  </ItemGroup>
+
+</Project>

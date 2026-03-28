@@ -53,6 +53,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\dnSpy.Extension.HoLLy.Contracts\dnSpy.Extension.HoLLy.Contracts.csproj" />
         <ProjectReference Include="..\dnSpy.Extension.HoLLy.EchoPlatforms\dnSpy.Extension.HoLLy.EchoPlatforms.csproj" />
         <ProjectReference Include="$(DnSpyRoot)\dnSpy\dnSpy.Contracts.Debugger\dnSpy.Contracts.Debugger.csproj" Private="false" />
         <ProjectReference Include="$(DnSpyRoot)\dnSpy\dnSpy.Contracts.DnSpy\dnSpy.Contracts.DnSpy.csproj" Private="false" />
