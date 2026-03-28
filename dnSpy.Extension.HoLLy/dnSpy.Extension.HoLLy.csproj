@@ -10,8 +10,8 @@
     <PropertyGroup>
         <Title>dnSpyEx Extension</Title>
         <Description>A dnSpyEx Extension</Description>
-        <Authors>HoLLy</Authors>
-        <Copyright>Copyright © HoLLy 2019-2022</Copyright>
+        <Authors>HoLLy; Charterino; ElektroKill; HorridModz; geocine</Authors>
+        <Copyright>Copyright © HoLLy 2019-2023; Charterino 2020; ElektroKill 2021-2023; HorridModz 2023; geocine 2026</Copyright>
         <FileVersion>0.5.2.0</FileVersion>
         <AssemblyVersion>0.5.2</AssemblyVersion>
 
