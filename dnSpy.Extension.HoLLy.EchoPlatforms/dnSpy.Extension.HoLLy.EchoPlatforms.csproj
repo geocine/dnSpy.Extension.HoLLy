@@ -1,7 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <DnSpyRoot Condition="'$(DnSpyRoot)' == ''">..\dnSpy</DnSpyRoot>
+        <EchoRoot Condition="'$(EchoRoot)' == ''">..\Echo</EchoRoot>
+    </PropertyGroup>
+
     <!-- Imports dnlib version -->
-    <Import Project="../dnSpy/DnSpyCommon.props" />
+    <Import Project="$(DnSpyRoot)\DnSpyCommon.props" />
 
     <PropertyGroup>
         <Nullable>enable</Nullable>
@@ -13,16 +18,16 @@
     </ItemGroup>
     
     <ItemGroup>
-        <ProjectReference Include="..\Echo\src\Core\Echo\Echo.csproj" />
-        <ProjectReference Include="..\Echo\src\Core\Echo.ControlFlow\Echo.ControlFlow.csproj" />
-        <ProjectReference Include="..\Echo\src\Core\Echo.DataFlow\Echo.DataFlow.csproj" />
+        <ProjectReference Include="$(EchoRoot)\src\Core\Echo\Echo.csproj" />
+        <ProjectReference Include="$(EchoRoot)\src\Core\Echo.ControlFlow\Echo.ControlFlow.csproj" />
+        <ProjectReference Include="$(EchoRoot)\src\Core\Echo.DataFlow\Echo.DataFlow.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="..\Echo\src\Platforms\Echo.Platforms.Dnlib\*.cs">
+        <Compile Include="$(EchoRoot)\src\Platforms\Echo.Platforms.Dnlib\*.cs">
             <Link>EchoPlatforms\dnlib\%(RecursiveDir)\%(Filename)%(Extension)</Link>
         </Compile>
-        <Compile Include="..\Echo\src\Platforms\Echo.Platforms.Iced\*.cs">
+        <Compile Include="$(EchoRoot)\src\Platforms\Echo.Platforms.Iced\*.cs">
             <Link>EchoPlatforms\Iced\%(RecursiveDir)\%(Filename)%(Extension)</Link>
         </Compile>
     </ItemGroup>

@@ -1,7 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
+    <PropertyGroup>
+        <DnSpyRoot Condition="'$(DnSpyRoot)' == ''">..\dnSpy</DnSpyRoot>
+    </PropertyGroup>
+
     <!-- Imports dnlib version -->
-    <Import Project="../dnSpy/DnSpyCommon.props" />
+    <Import Project="$(DnSpyRoot)\DnSpyCommon.props" />
 
     <PropertyGroup>
         <Title>dnSpyEx Extension</Title>
@@ -50,9 +54,9 @@
 
     <ItemGroup>
         <ProjectReference Include="..\dnSpy.Extension.HoLLy.EchoPlatforms\dnSpy.Extension.HoLLy.EchoPlatforms.csproj" />
-        <ProjectReference Include="..\dnSpy\dnSpy\dnSpy.Contracts.Debugger\dnSpy.Contracts.Debugger.csproj" Private="false" />
-        <ProjectReference Include="..\dnSpy\dnSpy\dnSpy.Contracts.DnSpy\dnSpy.Contracts.DnSpy.csproj" Private="false" />
-        <ProjectReference Include="..\dnSpy\dnSpy\dnSpy.Contracts.Logic\dnSpy.Contracts.Logic.csproj" Private="false" />
+        <ProjectReference Include="$(DnSpyRoot)\dnSpy\dnSpy.Contracts.Debugger\dnSpy.Contracts.Debugger.csproj" Private="false" />
+        <ProjectReference Include="$(DnSpyRoot)\dnSpy\dnSpy.Contracts.DnSpy\dnSpy.Contracts.DnSpy.csproj" Private="false" />
+        <ProjectReference Include="$(DnSpyRoot)\dnSpy\dnSpy.Contracts.Logic\dnSpy.Contracts.Logic.csproj" Private="false" />
     </ItemGroup>
 
     <ItemGroup>
