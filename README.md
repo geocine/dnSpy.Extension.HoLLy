@@ -84,6 +84,15 @@ JetBrains Rider supports launch profiles, allowing you to specify dnSpy as the e
 
 When using `--extension-directory`, prefer the modern .NET dnSpy build. .NET Framework assembly resolving can be more fragile when loading extensions from an external directory.
 
+### Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
+before opening a pull request.
+
+The short version: **open an issue first** describing what you want to change
+and wait for maintainer approval. If the change fits the project, I'll add you
+as a collaborator so you can push a branch directly.
+
 ### License
 Due to dnSpy being licensed under the GPLv3 license, this plugin is too.
 
